@@ -1,58 +1,96 @@
 #include <iostream>
+#include <vector>
 #include <string>
 using namespace std;
 
+/*
+TODO:
+  - Let Ship inherit from coordinates as child class of Point class
+*/
+
 class Ship {
-    string status;                       // dead or alive
-    int live_slits;                   // number oh hits needed to sink ship
-    int hits;                         // number of hits on a ship
-  public:
-    Ship(int);                         // constructor
-    void update_status ();         // Changes ship from alive to dead
-    string check_status () {return status;} // Tells if ship is dead/alive
-    void hit();                       // Increase # of hits
+private:
+  bool alive;           // dead or alive
+  int size;             // number of hits needed to sink ship
+  int hits;             // number of hits on a ship
+public:
+  Ship(int size);       // constructor
+  Ship(const Ship &);   // copy constructor
+  ~Ship();              // destructor
+
+  bool is_alive() const { return alive; }
+  int  get_size() const { return size; }
+  int  health()   const { return (size - hits); }
+
+  void update_status(); // Changes ship from alive to dead
+  void hit();           // Increase # of hits and update status
+
+  // default ship sizes
+  enum Type {
+    Carrier    = 5,
+    Battleship = 4,
+    Submarine  = 3,
+    Cruiser    = 3,
+    Destroyer  = 2,
+    PatrolBoat = 2
+  };
 };
 
-Ship::Ship (int size) {           // constructor 
-  status = "alive";
-  live_slits = size;
+Ship::Ship (int s) {
+  alive = true;
+  size = s;
   hits = 0;
 }
-  
+
+Ship::Ship(const Ship &ship) {
+  alive = ship.alive;
+  size  = ship.size;
+  hits  = ship.hits; 
+}
+
+Ship::~Ship() {
+  // does nothing for now
+}
+
+// Called automatically by Ship::hit()
 void Ship::update_status () {
-  if (hits > live_slits)
-    {status = "dead";}
+  // ship is still alive if the number of
+  // times it has been hit is less than size
+  alive = hits < size;
 }
 
 void Ship::hit(){
-  hits++;
+  // does not hit if ship already dead
+  if (alive) {
+    hits++;
+    update_status();
+  }
 }
 
 
 
+
+// test function
 int main()
 {
-  // During set up
-  Ship destroyer_player1(5);
-  Ship destroyer_computer(5);
+  vector<Ship> ships = {
+    Ship(Ship::Type::Carrier),
+    Ship(Ship::Type::Battleship),
+    Ship(Ship::Type::Submarine),
+    Ship(Ship::Type::Cruiser),
+    Ship(Ship::Type::Destroyer),
+    Ship(Ship::Type::PatrolBoat)
+  };
+
+  // hit each ship once
+  for (int i = 0; i < ships.size(); i++) {
+    ships[i].hit();
+  }
   
-  /* 
-         if the attack is on the location of destroyer
-            {
-             destroyer_player1.hit();
-             destroyer_player1.update_status;
-            }
-  */
-  
-  cout << "Ship status: " << destroyer_player1.check_status();
-  
-   
-        if (destroyer_player1.check_status() == "dead")
-        {
-            cout << "\n destroyer is sunk";
-            // number_of_dead_ships++
-        }
-        
-        
-  
+  // display some information about each ship
+  for (int j = 0; j < ships.size(); j++) {
+    cout << "Status: " << (ships[j].is_alive() ? "alive" : "dead") << "; "
+         << "Size: " << ships[j].get_size() << "; "
+         << "Health: " << ships[j].health() << endl;
+  }
 }
