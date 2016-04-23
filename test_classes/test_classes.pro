@@ -4,7 +4,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    ship.cpp
+    ship.cpp \
+    point.cpp
 
 HEADERS += \
-    ship.h
+    ship.h \
+    point.h
