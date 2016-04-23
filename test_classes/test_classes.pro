@@ -5,3 +5,6 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     ship.cpp
+
+HEADERS += \
+    ship.h
