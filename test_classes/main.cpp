@@ -2,10 +2,76 @@
 #include <vector>
 #include "point.h"
 #include "ship.h"
+#include "player.h"
+#include <stdlib.h> //used for srand
+#include <time.h> //used for srand
 
-using namespace std;
+void goesFirst (Player, Player);
 
-int main()
+
+
+void main () {
+    Player player1, player2;
+    goesFirst(player1,player2);
+
+
+
+    while (player1.isAlive() && player2.isAlive()) {
+        if (player1.turn == true) {
+
+            //player1 gameplay here
+
+            /*
+             * THINGS TO DO IN HERE:
+             * 1. Update Grid
+             * 2. Ask for input for coordinate
+             * 3.
+             *
+            */
+
+            player1.turnSwap();
+            player2.turnSwap();
+        }
+        else {
+            //player2 gameplay here
+
+            player1.turnSwap();
+            player2.turnSwap();
+
+        }
+    }
+
+    if (player1.isAlive() == false) {
+        cout << "Player 2 Wins!" << endl; //Go to endgame (Cout for now)
+
+    }
+    else {
+        cout << "Player 1 Wins!" << endl; //Go to endgame (cout for now)
+    }
+
+}
+
+
+
+void goesFirst (Player p1, Player p2) {
+
+    srand (time(NULL));             // initialize the random seed
+    first = rand() % 100 + 1;       // random # from 1 to 100
+    if (first % 2) == 0 {           // Player 1 goes first if even
+        p1.firstTurn();
+        p2.notFirstTurn();
+    }
+    else {
+        p1.notFirstTurn();     //Player 2 goes first if odd
+        p2.FirstTurn();
+    }
+
+}
+
+
+
+//Wulfgang's Main Class
+/*int main()
 {
     vector<Point> points = { Point(), Point(6, 9) };
     points[0].set_hit();
@@ -37,3 +103,4 @@ int main()
 
     return 0;
 }
+*/

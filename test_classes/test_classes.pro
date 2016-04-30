@@ -5,8 +5,10 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     ship.cpp \
-    point.cpp
+    point.cpp \
+    player.cpp
 
 HEADERS += \
     ship.h \
-    point.h
+    point.h \
+    player.h
